@@ -1,76 +1,167 @@
-# Adaptive LLVM Code Obfuscation Using Machine Learning
+# 🩺 Disease Prediction Using Machine Learning
 
-A Python-based application that performs adaptive code obfuscation on LLVM Intermediate Representation (IR) using a Machine Learning framework. The system analyzes program characteristics, extracts software metrics, and automatically selects the most suitable obfuscation strategy using a Random Forest classifier.
+A machine learning-based disease prediction system that analyzes patient symptoms and predicts the most probable disease using supervised learning algorithms.
 
-## Features
+This project demonstrates the complete machine learning workflow, including data preprocessing, feature engineering, model training, prediction, and performance evaluation.
 
-- Automatic LLVM IR parsing
-- Feature extraction from LLVM IR
-- Random Forest–based obfuscation strategy selection
-- Control Flow Flattening
-- Instruction Substitution
-- XOR-based String Encryption
-- Obfuscation metrics generation
-- Visual performance reports
+---
 
-## Tech Stack
+## 📌 Overview
+
+The objective of this project is to build an intelligent disease prediction model that assists in identifying diseases based on patient symptoms.
+
+The system was developed using Python and Scikit-learn as part of an academic machine learning project.
+
+---
+
+## ✨ Features
+
+- Predicts diseases based on patient symptoms
+- Data preprocessing and feature engineering
+- Machine Learning model training and evaluation
+- Supports prediction for **41 diseases**
+- Trained using **4,920 patient records**
+- Achieved **92% prediction accuracy**
+- Simple and reproducible workflow
+
+---
+
+## 🛠 Technologies Used
 
 - Python
-- LLVM Intermediate Representation (IR)
 - Scikit-learn
-- NumPy
 - Pandas
+- NumPy
 - Matplotlib
+- Jupyter Notebook
 
-## Project Structure
+---
 
-```
-llvm-code-obfuscator/
+## 📂 Project Structure
+
+```text
+DiseasePredictionUsingML/
 │
-├── ml/
-├── obfuscation/
-├── parser/
-├── report/
-├── samples/
-├── main.py
-└── .gitignore
+├── DiseasePredictionUsingMachineLearning/
+│   ├── Notebook/
+│   │   ├── Disease_Prediction.ipynb
+│   │   ├── Training.csv
+│   │   └── Testing.csv
+│   │
+│   └── Source Code
+│
+├── docs/
+│   ├── Project_Report.pdf
+│   ├── Abstract.pdf
+│   ├── Presentation.pptx
+│   ├── EXECUTABLE_CODE.pdf
+│   ├── Execution_Guide.docx
+│   └── README.md
+│
+├── README.md
+└── LICENSE
 ```
 
-## How It Works
+---
 
-1. Parse the LLVM IR file.
-2. Extract structural program features.
-3. Predict the optimal obfuscation strategy using a Random Forest classifier.
-4. Apply the selected obfuscation.
-5. Generate metrics and performance reports.
+## ⚙ Workflow
 
-## Running the Project
+1. Load and preprocess the dataset
+2. Train the Machine Learning model
+3. Evaluate model performance
+4. Predict disease using patient symptoms
+5. Display prediction results
+
+---
+
+## 📊 Dataset
+
+- **Training Records:** 4,920
+- **Diseases:** 41
+- **Input:** Patient symptoms
+- **Output:** Predicted disease
+
+---
+
+## 📈 Results
+
+- Prediction Accuracy: **92%**
+- Successfully classifies diseases using patient symptom data
+- Demonstrates the practical application of machine learning in healthcare
+
+---
+
+## 🚀 How to Run
+
+### Clone the repository
 
 ```bash
-python main.py samples/hello.ll
+git clone https://github.com/whysnavi/DiseasePredictionUsingML.git
 ```
-## 🚀 Demo & Execution Guide
 
-A step-by-step command reference is available for running and demonstrating the project.
+### Open the project
 
-### Included
+```bash
+cd DiseasePredictionUsingML
+```
 
-- Project setup
-- Running sample LLVM IR files
-- Viewing generated metrics
-- Inspecting obfuscated LLVM IR
-- Running the project on new C programs
+### Launch Jupyter Notebook
 
-📄 **Demo Commands Cheat Sheet:**  
-[demo_commands_cheatsheet.html](docs/demo_commands_cheatsheet.html)
+```bash
+jupyter notebook
+```
 
-**Adaptive LLVM-Based Code Obfuscation Using a Random Forest Selection Framework**
+### Open
 
-Published in the **International Journal for Research in Applied Science & Engineering Technology (IJRASET)**.
+```
+Disease_Prediction.ipynb
+```
 
-## Author
+Run all cells to train the model and perform disease prediction.
+
+---
+
+## 📚 Project Documentation
+
+Complete project documentation is available inside the **docs/** folder.
+
+Included documents:
+
+- 📄 Project Report
+- 📄 Abstract
+- 📄 Presentation
+- 📄 Execution Guide
+- 📄 Executable Code
+
+---
+
+## 🎯 Future Improvements
+
+- Deploy as a Flask web application
+- Add user-friendly web interface
+- Integrate real-time patient input
+- Improve prediction accuracy using ensemble methods
+- Expand support for additional diseases
+
+---
+
+## 👩‍💻 Author
 
 **Vaishnavi Logishetty**
 
-Artificial Intelligence & Data Science  
-Methodist College of Engineering and Technology
+B.E. Artificial Intelligence & Data Science  
+Methodist College of Engineering & Technology  
+Hyderabad, India
+
+- GitHub: https://github.com/whysnavi
+- LinkedIn: https://www.linkedin.com/in/vaishnavi-logishetty
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**.
+
+---
+
+⭐ If you found this project useful, consider giving it a **Star** on GitHub.
