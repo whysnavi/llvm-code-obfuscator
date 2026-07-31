@@ -49,8 +49,20 @@ llvm-code-obfuscator/
 ```bash
 python main.py samples/hello.ll
 ```
+## 🚀 Demo & Execution Guide
 
-## Research Publication
+A step-by-step command reference is available for running and demonstrating the project.
+
+### Included
+
+- Project setup
+- Running sample LLVM IR files
+- Viewing generated metrics
+- Inspecting obfuscated LLVM IR
+- Running the project on new C programs
+
+📄 **Demo Commands Cheat Sheet:**  
+[demo_commands_cheatsheet.html](docs/demo_commands_cheatsheet.html)
 
 **Adaptive LLVM-Based Code Obfuscation Using a Random Forest Selection Framework**
 
