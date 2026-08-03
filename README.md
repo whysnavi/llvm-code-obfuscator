@@ -211,7 +211,7 @@ Methodist College of Engineering & Technology
 Hyderabad, Telangana, India
 
 - GitHub: https://github.com/whysnavi
-- LinkedIn: https://www.linkedin.com/in/vaishnavi-logishetty
+- LinkedIn: https://www.linkedin.com/in/vaishnavi-logishetty-501619336/
 
 ---
 
