@@ -1,167 +1,224 @@
-# 🩺 Disease Prediction Using Machine Learning
+# 🛡️ Adaptive LLVM Code Obfuscation using Machine Learning
 
-A machine learning-based disease prediction system that analyzes patient symptoms and predicts the most probable disease using supervised learning algorithms.
+An intelligent LLVM-based software obfuscation framework that leverages **Machine Learning** to automatically select the most suitable obfuscation strategy based on program characteristics.
 
-This project demonstrates the complete machine learning workflow, including data preprocessing, feature engineering, model training, prediction, and performance evaluation.
-
----
-
-## 📌 Overview
-
-The objective of this project is to build an intelligent disease prediction model that assists in identifying diseases based on patient symptoms.
-
-The system was developed using Python and Scikit-learn as part of an academic machine learning project.
+The framework operates on **LLVM Intermediate Representation (IR)** and combines compiler technology with **Machine Learning** to provide adaptive, secure, and efficient software protection against reverse engineering.
 
 ---
 
-## ✨ Features
+# 📑 Table of Contents
 
-- Predicts diseases based on patient symptoms
-- Data preprocessing and feature engineering
-- Machine Learning model training and evaluation
-- Supports prediction for **41 diseases**
-- Trained using **4,920 patient records**
-- Achieved **92% prediction accuracy**
-- Simple and reproducible workflow
-
----
-
-## 🛠 Technologies Used
-
-- Python
-- Scikit-learn
-- Pandas
-- NumPy
-- Matplotlib
-- Jupyter Notebook
+- [📌 Project Description](#-project-description)
+- [✨ Project Highlights](#-project-highlights)
+- [🏗️ Architecture / Workflow](#️-architecture--workflow)
+- [🚀 Features](#-features)
+- [📂 Repository Structure](#-repository-structure)
+- [⚡ Quick Start](#-quick-start)
+- [📚 Documentation](#-documentation)
+- [🔬 Research Paper](#-research-paper)
+- [📘 Project Report](#-project-report)
+- [🖼️ Screenshots](#️-screenshots)
+- [🔮 Future Work](#-future-work)
+- [👩‍💻 Author](#-author)
+- [📄 License](#-license)
 
 ---
 
-## 📂 Project Structure
+# 📌 Project Description
+
+Adaptive LLVM Code Obfuscation using Machine Learning is an intelligent software protection framework developed to enhance the security of compiled applications against reverse engineering attacks.
+
+The framework analyzes **LLVM Intermediate Representation (IR)**, extracts structural program features, predicts the most suitable obfuscation strategy using a **Random Forest classifier**, and applies compiler-level obfuscation techniques while preserving program functionality.
+
+The project integrates compiler design, software security, and machine learning to provide an adaptive and research-oriented approach to code protection.
+
+---
+
+# ✨ Project Highlights
+
+- 🛡 LLVM IR–based software protection
+- 🤖 Machine Learning–driven obfuscation strategy selection
+- 🌲 Random Forest classifier
+- 🔀 Control Flow Flattening
+- 🔄 Instruction Substitution
+- 🔐 XOR-based String Encryption
+- 📊 Obfuscation metrics generation
+- 📈 Complexity and entropy analysis
+- 🧩 Modular project architecture
+- 🎓 Research-oriented implementation
+
+---
+
+# 🏗️ Architecture / Workflow
 
 ```text
-DiseasePredictionUsingML/
+                LLVM IR File (.ll)
+                       │
+                       ▼
+                IR Parser Module
+                       │
+                       ▼
+             Feature Extraction
+                       │
+                       ▼
+          Random Forest Classifier
+                       │
+                       ▼
+        Strategy Prediction Engine
+                       │
+        ┌──────────────┼──────────────┐
+        ▼              ▼              ▼
+ Control Flow   Instruction      String
+ Flattening     Substitution     Encryption
+        └──────────────┼──────────────┘
+                       ▼
+            Obfuscated LLVM IR
+                       │
+                       ▼
+      Metrics & Visualization Report
+```
+
+### Workflow Overview
+
+1. Parse LLVM IR.
+2. Extract program features.
+3. Predict the best obfuscation strategy.
+4. Apply compiler-level obfuscation.
+5. Generate evaluation metrics and reports.
+
+---
+
+# 🚀 Features
+
+- LLVM IR Parsing
+- Static Code Analysis
+- Feature Extraction
+- Machine Learning-Based Strategy Prediction
+- Control Flow Flattening
+- Instruction Substitution
+- XOR-based String Encryption
+- Obfuscation Metrics
+- Visualization Reports
+- Modular Architecture
+- Command-Line Execution
+
+---
+
+# 📂 Repository Structure
+
+```text
+llvm-code-obfuscator/
 │
-├── DiseasePredictionUsingMachineLearning/
-│   ├── Notebook/
-│   │   ├── Disease_Prediction.ipynb
-│   │   ├── Training.csv
-│   │   └── Testing.csv
-│   │
-│   └── Source Code
+├── docs/              # Documentation
+├── ml/                # Machine Learning modules
+├── obfuscation/       # Obfuscation techniques
+├── paper/             # Research paper
+├── parser/            # LLVM IR parser
+├── report/            # Metrics and reporting
+├── samples/           # Sample C and LLVM IR files
 │
-├── docs/
-│   ├── Project_Report.pdf
-│   ├── Abstract.pdf
-│   ├── Presentation.pptx
-│   ├── EXECUTABLE_CODE.pdf
-│   ├── Execution_Guide.docx
-│   └── README.md
-│
+├── main.py
 ├── README.md
-└── LICENSE
+├── LICENSE
+└── .gitignore
 ```
 
 ---
 
-## ⚙ Workflow
+# ⚡ Quick Start
 
-1. Load and preprocess the dataset
-2. Train the Machine Learning model
-3. Evaluate model performance
-4. Predict disease using patient symptoms
-5. Display prediction results
-
----
-
-## 📊 Dataset
-
-- **Training Records:** 4,920
-- **Diseases:** 41
-- **Input:** Patient symptoms
-- **Output:** Predicted disease
-
----
-
-## 📈 Results
-
-- Prediction Accuracy: **92%**
-- Successfully classifies diseases using patient symptom data
-- Demonstrates the practical application of machine learning in healthcare
-
----
-
-## 🚀 How to Run
-
-### Clone the repository
+Clone the repository
 
 ```bash
-git clone https://github.com/whysnavi/DiseasePredictionUsingML.git
+git clone https://github.com/whysnavi/llvm-code-obfuscator.git
 ```
 
-### Open the project
+Navigate to the project
 
 ```bash
-cd DiseasePredictionUsingML
+cd llvm-code-obfuscator
 ```
 
-### Launch Jupyter Notebook
+Run the framework
 
 ```bash
-jupyter notebook
+python main.py samples/hello.ll
 ```
 
-### Open
-
-```
-Disease_Prediction.ipynb
-```
-
-Run all cells to train the model and perform disease prediction.
+> Detailed execution steps and sample commands will be added in the documentation.
 
 ---
 
-## 📚 Project Documentation
+# 📚 Documentation
 
-Complete project documentation is available inside the **docs/** folder.
+Project documentation will be expanded in future updates.
 
-Included documents:
-
-- 📄 Project Report
-- 📄 Abstract
-- 📄 Presentation
-- 📄 Execution Guide
-- 📄 Executable Code
+- 📖 Execution Guide *(Coming Soon)*
+- 📘 Project Report *(Coming Soon)*
+- 📄 Research Paper
+- 💻 Demo Commands
+- 📊 Presentation
 
 ---
 
-## 🎯 Future Improvements
+# 🔬 Research Paper
 
-- Deploy as a Flask web application
-- Add user-friendly web interface
-- Integrate real-time patient input
-- Improve prediction accuracy using ensemble methods
-- Expand support for additional diseases
+The complete research paper describing the adaptive LLVM obfuscation framework, methodology, implementation, and evaluation is included in the repository.
 
 ---
 
-## 👩‍💻 Author
+# 📘 Project Report
+
+The detailed project report includes:
+
+- Problem Statement
+- Literature Survey
+- System Design
+- Methodology
+- Implementation
+- Results
+- Future Scope
+
+---
+
+# 🖼️ Screenshots
+
+Screenshots demonstrating the execution workflow, generated LLVM IR, obfuscation process, and output metrics will be added soon.
+
+---
+
+# 🔮 Future Work
+
+- Support additional LLVM versions
+- Deep Learning-based strategy prediction
+- Reinforcement Learning for adaptive optimization
+- GUI-based application
+- Web dashboard
+- Additional LLVM obfuscation passes
+- Performance benchmarking
+- Integration with LLVM optimization passes
+
+---
+
+# 👩‍💻 Author
 
 **Vaishnavi Logishetty**
 
-B.E. Artificial Intelligence & Data Science  
-Methodist College of Engineering & Technology  
-Hyderabad, India
+B.E. Artificial Intelligence & Data Science
+
+Methodist College of Engineering & Technology
+
+Hyderabad, Telangana, India
 
 - GitHub: https://github.com/whysnavi
-- LinkedIn: https://www.linkedin.com/in/vaishnavi-logishetty-501619336/
+- LinkedIn: https://www.linkedin.com/in/vaishnavi-logishetty
 
 ---
 
-## 📄 License
+# 📄 License
 
 This project is licensed under the **MIT License**.
 
 ---
 
-⭐ If you found this project useful, consider giving it a **Star** on GitHub.
+⭐ If you find this project useful, consider giving it a **Star** on GitHub.
