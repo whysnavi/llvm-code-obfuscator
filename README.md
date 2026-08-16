@@ -237,7 +237,7 @@ The Random Forest classifier consistently matched strategy to program shape — 
 
 - 💻 [Demo Commands Cheatsheet](docs/demo_commands_cheatsheet.html)
 - 🔬 [Research Paper (PDF)](paper/llvm_obfusfator_researchpaper.pdf)
-- 🎓 [Publication Certificate](docs/Vaishnavi_llvm_certificate.pdf)
+- 🎓 [Publication Certificate](docs/llvm_ijraset_certificate.pdf)
 
 ---
 
