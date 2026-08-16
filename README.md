@@ -130,31 +130,43 @@ llvm-code-obfuscator/
 
 # ⚡ Quick Start
 
-Clone the repository
-
+**1. Clone the repository**
 ```bash
 git clone https://github.com/whysnavi/llvm-code-obfuscator.git
 ```
 
-Navigate to the project
-
+**2. Navigate to the project**
 ```bash
 cd llvm-code-obfuscator
 ```
 
-Install dependencies
-
+**3. Install dependencies**
 ```bash
 pip install -r requirements.txt
 ```
 
-Run the framework
-
+**4. Run the framework on a sample**
 ```bash
 python main.py samples/hello.ll
 ```
 
-Obfuscated output (`.ll`) and a metrics comparison chart (`.png`) are saved to the `output/` directory.
+**5. View the results**
+- Terminal output shows the 5-stage pipeline live: parsing → feature extraction → ML strategy selection → obfuscation → metrics report
+- Obfuscated IR is saved to `output/hello_obfuscated.ll`
+- A before/after metrics chart is saved to `output/hello_metrics.png`
+
+**6. Try other samples to see different strategies selected**
+```bash
+python main.py samples/arithmetic.ll   # → Instruction Substitution
+python main.py samples/strings.ll      # → String Encryption
+python main.py samples/internet_program.ll   # → Control Flow Flattening
+```
+
+**7. Run on your own C program**
+```bash
+clang -S -emit-llvm your_program.c -o samples/your_program.ll
+python main.py samples/your_program.ll
+```
 
 ---
 
