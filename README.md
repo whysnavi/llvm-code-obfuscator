@@ -14,10 +14,12 @@ The framework operates on **LLVM Intermediate Representation (IR)** and combines
 - [🚀 Features](#-features)
 - [📂 Repository Structure](#-repository-structure)
 - [⚡ Quick Start](#-quick-start)
+- [🔍 Before / After Example](#-before--after-example)
+- [📊 Results](#-results)
+- [🖼️ Screenshots](#️-screenshots)
 - [📚 Documentation](#-documentation)
 - [🔬 Research Paper](#-research-paper)
 - [📘 Project Report](#-project-report)
-- [🖼️ Screenshots](#️-screenshots)
 - [🔮 Future Work](#-future-work)
 - [👩‍💻 Author](#-author)
 - [📄 License](#-license)
@@ -45,7 +47,7 @@ The project integrates compiler design, software security, and machine learning 
 - 📊 Obfuscation metrics generation
 - 📈 Complexity and entropy analysis
 - 🧩 Modular project architecture
-- 🎓 Research-oriented implementation
+- 🎓 Research-oriented implementation, published in IJRASET (Vol. 14, Issue IV, April 2026)
 
 ---
 
@@ -109,7 +111,7 @@ The project integrates compiler design, software security, and machine learning 
 ```text
 llvm-code-obfuscator/
 │
-├── docs/              # Documentation
+├── docs/              # Documentation, certificate, screenshots
 ├── ml/                # Machine Learning modules
 ├── obfuscation/       # Obfuscation techniques
 ├── paper/             # Research paper
@@ -118,6 +120,7 @@ llvm-code-obfuscator/
 ├── samples/           # Sample C and LLVM IR files
 │
 ├── main.py
+├── requirements.txt
 ├── README.md
 ├── LICENSE
 └── .gitignore
@@ -139,31 +142,115 @@ Navigate to the project
 cd llvm-code-obfuscator
 ```
 
+Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
 Run the framework
 
 ```bash
 python main.py samples/hello.ll
 ```
 
-> Detailed execution steps and sample commands will be added in the documentation.
+Obfuscated output (`.ll`) and a metrics comparison chart (`.png`) are saved to the `output/` directory.
+
+---
+
+# 🔍 Before / After Example
+
+A single function from `samples/hello.ll`, before and after Control Flow Flattening is applied:
+
+**Original:**
+```llvm
+define i32 @add(i32 %a, i32 %b) {
+entry:
+  %result = add i32 %a, %b
+  ret i32 %result
+}
+```
+
+**Obfuscated:**
+```llvm
+define i32 @add(i32 %a, i32 %b) {
+entry:
+  %result = add i32 %a, %b
+  %opaque_1a = add i32 0, 0
+  %opaque_1b = mul i32 1, 1
+  %opaque_1c = sub i32 %opaque_1b, %opaque_1a
+  %guard_1 = add i32 %opaque_1c, 0
+  ; [CFF] opaque predicate 1 — always evaluates to 0
+  ret i32 %result
+}
+```
+
+The opaque predicate block (`%opaque_1a` → `%guard_1`) always evaluates to `0` at runtime, so program behavior is unchanged — but static analysis tools see extra branches and instructions to untangle, increasing the effort required to reverse-engineer the original logic.
+
+---
+
+# 📊 Results
+
+The pipeline was evaluated end-to-end on multiple LLVM IR sample programs, measuring instruction count, cyclomatic complexity, and byte entropy before and after transformation — with the ML model independently selecting the obfuscation strategy for each program based on its instruction profile.
+
+| Sample | Orig Instr | Obf Instr | Orig CC | Obf CC | Entropy Δ | Strategy Selected |
+|---|---|---|---|---|---|---|
+| `hello.ll` | 15 | 55+ | 3 | 11+ | +8% | Control Flow Flattening |
+| `arithmetic.ll` | 20 | 80+ | 4 | 16+ | +10% | Instruction Substitution |
+| `strings.ll` | 12 | 40+ | 2 | 8+ | +12% | String Encryption |
+| `sample_program.ll` | 90+ | 350+ | 12+ | 48+ | +15% | All Passes Combined |
+| `bubble_sort.ll` | 60+ | 240+ | 8+ | 32+ | +11% | Control Flow Flattening |
+
+**Key results across all tested samples:**
+
+| Metric | Improvement |
+|---|---|
+| Instruction count | **+200% to +400%** |
+| Cyclomatic complexity | **+250% to +400%** |
+| Byte entropy | **+8% to +15%** |
+| Pipeline execution time | **< 2 seconds** per sample |
+| ML strategy confidence | **60% – 90%** |
+
+The Random Forest classifier consistently matched strategy to program shape — branch-heavy programs received Control Flow Flattening, arithmetic-heavy programs received Instruction Substitution, and string-heavy programs received String Encryption — without any manual tuning per sample.
+
+📄 *Full methodology, test cases, and additional analysis available in the [published research paper](paper/llvm_obfusfator_researchpaper.pdf) (IJRASET, Vol. 14, Issue IV, April 2026).*
+
+---
+
+# 🖼️ Screenshots
+
+**End-to-end terminal output** — parsing, feature extraction, ML strategy selection, obfuscation, and metrics reporting:
+
+![Terminal Output](docs/terminal_output.jpeg)
+
+**Before / after IR comparison** — `hello.ll` vs `hello_obfuscated.ll` side-by-side, showing inserted opaque predicates tagged `[CFF]`:
+
+![Before/After IR Comparison](docs/before_after_ir_comparison.jpeg)
+
+**Metrics chart** — instruction count, cyclomatic complexity, and entropy before/after obfuscation on a larger sample program:
+
+![Metrics Chart](docs/metrics_chart_sample_program.jpeg)
 
 ---
 
 # 📚 Documentation
 
-Project documentation will be expanded in future updates.
-
-- 📖 Execution Guide *(Coming Soon)*
-- 📘 Project Report *(Coming Soon)*
-- 📄 Research Paper
-- 💻 Demo Commands
-- 📊 Presentation
+- 💻 [Demo Commands Cheatsheet](docs/demo_commands_cheatsheet.html)
+- 🔬 [Research Paper (PDF)](paper/llvm_obfusfator_researchpaper.pdf)
+- 🎓 [Publication Certificate](docs/Vaishnavi_llvm_certificate.pdf)
 
 ---
 
 # 🔬 Research Paper
 
-The complete research paper describing the adaptive LLVM obfuscation framework, methodology, implementation, and evaluation is included in the repository.
+**"Adaptive LLVM-Based Code Obfuscation Using a Random Forest Selection Framework"**
+
+Co-authored, published in the *International Journal for Research in Applied Science & Engineering Technology (IJRASET)*, Volume 14, Issue IV, April 2026.
+DOI: [10.22214/ijraset.2026.79512](https://doi.org/10.22214/ijraset.2026.79512)
+
+This repository contains my individual implementation of the framework described in the paper — the full pipeline (parser, feature extraction, ML strategy selection, obfuscation passes, and metrics reporting) was built and is maintained solely by me.
+
+Full text available in [`paper/`](paper/).
 
 ---
 
@@ -178,12 +265,6 @@ The detailed project report includes:
 - Implementation
 - Results
 - Future Scope
-
----
-
-# 🖼️ Screenshots
-
-Screenshots demonstrating the execution workflow, generated LLVM IR, obfuscation process, and output metrics will be added soon.
 
 ---
 
