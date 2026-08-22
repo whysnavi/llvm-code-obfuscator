@@ -1,5 +1,6 @@
 import os
 import glob
+import subprocess
 import streamlit as st
 import matplotlib
 matplotlib.use("Agg")
@@ -43,20 +44,65 @@ col_left, col_right = st.columns([1, 1])
 
 with col_left:
     st.subheader("1. Choose input")
-    mode = st.radio("Input source", ["Pick a sample", "Paste your own LLVM IR"], horizontal=True)
+    mode = st.radio(
+        "Input source",
+        ["Pick a sample", "Paste your own LLVM IR", "Paste C code"],
+        horizontal=True,
+    )
+
+    ir_text = ""
+    compile_error = None
 
     if mode == "Pick a sample":
         chosen = st.selectbox("Sample program", sample_names, index=sample_names.index("hello.ll") if "hello.ll" in sample_names else 0)
         with open(os.path.join("samples", chosen), "r", encoding="utf-8") as f:
             ir_text = f.read()
-    else:
+        st.code(ir_text, language="llvm", line_numbers=True)
+
+    elif mode == "Paste your own LLVM IR":
         ir_text = st.text_area(
             "Paste LLVM IR (.ll) here",
             height=250,
             placeholder="define i32 @add(i32 %a, i32 %b) {\nentry:\n  %result = add i32 %a, %b\n  ret i32 %result\n}",
         )
+        st.code(ir_text if ir_text else "// nothing loaded yet", language="llvm", line_numbers=True)
 
-    st.code(ir_text if ir_text else "// nothing loaded yet", language="llvm", line_numbers=True)
+    else:  # Paste C code
+        c_code = st.text_area(
+            "Paste C code here",
+            height=250,
+            placeholder="int add(int a, int b) {\n    int result = a + b;\n    return result;\n}\n\nint main() {\n    return add(5, 3);\n}",
+        )
+        st.caption("Compiled to LLVM IR using `clang -S -emit-llvm` before running the obfuscation pipeline.")
+
+        if c_code.strip():
+            os.makedirs("output", exist_ok=True)
+            c_path = "output/_streamlit_input.c"
+            ll_path = "output/_streamlit_input_from_c.ll"
+            with open(c_path, "w", encoding="utf-8") as f:
+                f.write(c_code)
+            try:
+                result = subprocess.run(
+                    ["clang", "-S", "-emit-llvm", c_path, "-o", ll_path],
+                    capture_output=True, text=True, timeout=20,
+                )
+                if result.returncode != 0:
+                    compile_error = result.stderr
+                else:
+                    with open(ll_path, "r", encoding="utf-8") as f:
+                        ir_text = f.read()
+            except FileNotFoundError:
+                compile_error = "clang is not available in this environment."
+            except subprocess.TimeoutExpired:
+                compile_error = "Compilation timed out."
+
+        if compile_error:
+            st.error(f"clang compilation failed:\n\n{compile_error}")
+        elif ir_text:
+            st.success("Compiled to LLVM IR successfully.")
+            with st.expander("View generated LLVM IR"):
+                st.code(ir_text, language="llvm", line_numbers=True)
+
     run_clicked = st.button("▶ Run Obfuscator", type="primary", use_container_width=True)
 
 with col_right:
