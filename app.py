@@ -54,7 +54,7 @@ st.markdown("#### using Machine Learning")
 
 st.markdown(
     """
-    <span class="badge badge-purple">Published — IJRASET Vol. 14, April 2026</span>
+    <span class="badge badge-purple">Published: IJRASET Vol. 14, April 2026</span>
     <span class="badge badge-blue">Random Forest Strategy Selection</span>
     <span class="badge badge-green">Live Demo</span>
     """,
@@ -63,8 +63,8 @@ st.markdown(
 
 st.caption(
     "A Random Forest classifier analyzes LLVM IR structure and automatically selects "
-    "the best obfuscation strategy — Control Flow Flattening, Instruction Substitution, "
-    "String Encryption, or All Passes Combined — rather than applying one fixed transform "
+    "the best obfuscation strategy: Control Flow Flattening, Instruction Substitution, "
+    "String Encryption, or All Passes Combined, rather than applying one fixed transform "
     "to every program."
 )
 
@@ -243,7 +243,7 @@ with col_right:
 
         fig, axes = plt.subplots(1, 3, figsize=(12, 4))
         fig.patch.set_facecolor("#FFFFFF")
-        fig.suptitle(f"Obfuscation Metrics — {strategy}", fontsize=13)
+        ffig.suptitle(f"Obfuscation Metrics: {strategy}", fontsize=13)
         metrics = [
             ("Instructions", orig_instr, obf_instr),
             ("Cyclomatic Complexity", orig_cc, obf_cc),
