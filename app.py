@@ -19,24 +19,73 @@ from report.metrics import (
     obfuscation_score,
 )
 
-st.set_page_config(page_title="Adaptive LLVM Code Obfuscator", page_icon="🛡️", layout="wide")
+st.set_page_config(page_title="Adaptive LLVM Code Obfuscator", page_icon=":shield:", layout="wide")
 
-st.title("🛡️ Adaptive LLVM Code Obfuscation using Machine Learning")
+st.markdown(
+    """
+    <style>
+    .badge {
+        display: inline-block; padding: 4px 12px; border-radius: 14px;
+        font-size: 12px; font-weight: 600; margin-right: 6px; margin-bottom: 6px;
+    }
+    .badge-purple { background: #EEEDFE; color: #534AB7; }
+    .badge-blue   { background: #E6F1FB; color: #0C447C; }
+    .badge-green  { background: #E1F5EE; color: #085041; }
+    .flow-step {
+        background: #F5F3FF; border: 1px solid #E0DBFA; border-radius: 10px;
+        padding: 10px 14px; text-align: center; font-size: 13px; font-weight: 600;
+        color: #534AB7;
+    }
+    .flow-arrow { text-align: center; font-size: 20px; color: #A79EE8; padding-top: 10px; }
+    .metric-card {
+        background: #F8F8FC; border: 1px solid #ECEAFB; border-radius: 12px;
+        padding: 16px 18px; text-align: left;
+    }
+    .metric-card .label { font-size: 12px; color: #6B6B85; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+    .metric-card .value { font-size: 26px; font-weight: 700; color: #1A1A2E; margin: 4px 0; }
+    .metric-card .delta { font-size: 13px; color: #0F8A5F; font-weight: 600; }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+st.markdown("# Adaptive LLVM Code Obfuscation")
+st.markdown("#### using Machine Learning")
+
+st.markdown(
+    """
+    <span class="badge badge-purple">Published — IJRASET Vol. 14, April 2026</span>
+    <span class="badge badge-blue">Random Forest Strategy Selection</span>
+    <span class="badge badge-green">Live Demo</span>
+    """,
+    unsafe_allow_html=True,
+)
+
 st.caption(
     "A Random Forest classifier analyzes LLVM IR structure and automatically selects "
     "the best obfuscation strategy — Control Flow Flattening, Instruction Substitution, "
-    "String Encryption, or All Passes Combined. Published in IJRASET, Vol. 14, Issue IV, "
-    "April 2026."
+    "String Encryption, or All Passes Combined — rather than applying one fixed transform "
+    "to every program."
 )
 
 st.markdown(
-    "🔗 [GitHub Repository](https://github.com/whysnavi/llvm-code-obfuscator) &nbsp;|&nbsp; "
-    "📄 [Published Paper (DOI)](https://doi.org/10.22214/ijraset.2026.79512)"
+    "[GitHub Repository](https://github.com/whysnavi/llvm-code-obfuscator) &nbsp;|&nbsp; "
+    "[Published Paper (DOI)](https://doi.org/10.22214/ijraset.2026.79512)"
 )
 
 st.divider()
 
-# --- Sample selection ---
+flow_labels = ["IR / C Input", "Feature\nExtraction", "ML Strategy\nSelection", "Obfuscation", "Metrics\nReport"]
+flow_cols = st.columns([3, 1, 3, 1, 3, 1, 3, 1, 3])
+for i, label in enumerate(flow_labels):
+    with flow_cols[i * 2]:
+        st.markdown(f'<div class="flow-step">{label}</div>', unsafe_allow_html=True)
+    if i < len(flow_labels) - 1:
+        with flow_cols[i * 2 + 1]:
+            st.markdown('<div class="flow-arrow">→</div>', unsafe_allow_html=True)
+
+st.divider()
+
 sample_files = sorted(glob.glob("samples/*.ll"))
 sample_names = [os.path.basename(f) for f in sample_files]
 
@@ -44,37 +93,35 @@ col_left, col_right = st.columns([1, 1])
 
 with col_left:
     st.subheader("1. Choose input")
-    mode = st.radio(
-        "Input source",
-        ["Pick a sample", "Paste your own LLVM IR", "Paste C code"],
-        horizontal=True,
-    )
+    tab1, tab2, tab3 = st.tabs(["Sample program", "Paste LLVM IR", "Paste C code"])
 
-    ir_text = ""
     compile_error = None
 
-    if mode == "Pick a sample":
+    with tab1:
         chosen = st.selectbox("Sample program", sample_names, index=sample_names.index("hello.ll") if "hello.ll" in sample_names else 0)
         with open(os.path.join("samples", chosen), "r", encoding="utf-8") as f:
-            ir_text = f.read()
-        st.code(ir_text, language="llvm", line_numbers=True)
+            sample_ir = f.read()
+        st.code(sample_ir, language="llvm", line_numbers=True)
 
-    elif mode == "Paste your own LLVM IR":
-        ir_text = st.text_area(
+    with tab2:
+        pasted_ir = st.text_area(
             "Paste LLVM IR (.ll) here",
             height=250,
             placeholder="define i32 @add(i32 %a, i32 %b) {\nentry:\n  %result = add i32 %a, %b\n  ret i32 %result\n}",
+            key="ir_paste_area",
         )
-        st.code(ir_text if ir_text else "// nothing loaded yet", language="llvm", line_numbers=True)
+        st.code(pasted_ir if pasted_ir else "// nothing loaded yet", language="llvm", line_numbers=True)
 
-    else:  # Paste C code
+    with tab3:
         c_code = st.text_area(
             "Paste C code here",
             height=250,
             placeholder="int add(int a, int b) {\n    int result = a + b;\n    return result;\n}\n\nint main() {\n    return add(5, 3);\n}",
+            key="c_code_area",
         )
         st.caption("Compiled to LLVM IR using `clang -S -emit-llvm` before running the obfuscation pipeline.")
 
+        c_ir_text = ""
         if c_code.strip():
             os.makedirs("output", exist_ok=True)
             c_path = "output/_streamlit_input.c"
@@ -90,7 +137,7 @@ with col_left:
                     compile_error = result.stderr
                 else:
                     with open(ll_path, "r", encoding="utf-8") as f:
-                        ir_text = f.read()
+                        c_ir_text = f.read()
             except FileNotFoundError:
                 compile_error = "clang is not available in this environment."
             except subprocess.TimeoutExpired:
@@ -98,12 +145,25 @@ with col_left:
 
         if compile_error:
             st.error(f"clang compilation failed:\n\n{compile_error}")
-        elif ir_text:
+        elif c_ir_text:
             st.success("Compiled to LLVM IR successfully.")
             with st.expander("View generated LLVM IR"):
-                st.code(ir_text, language="llvm", line_numbers=True)
+                st.code(c_ir_text, language="llvm", line_numbers=True)
 
-    run_clicked = st.button("▶ Run Obfuscator", type="primary", use_container_width=True)
+    st.markdown("&nbsp;")
+    source_choice = st.radio(
+        "Run obfuscator on:",
+        ["Sample program", "Pasted LLVM IR", "Compiled C code"],
+        horizontal=True,
+    )
+    if source_choice == "Sample program":
+        ir_text = sample_ir
+    elif source_choice == "Pasted LLVM IR":
+        ir_text = pasted_ir
+    else:
+        ir_text = c_ir_text
+
+    run_clicked = st.button("Run Obfuscator", type="primary", use_container_width=True)
 
 with col_right:
     st.subheader("2. Pipeline output")
@@ -157,15 +217,32 @@ with col_right:
 
             status.update(label="Pipeline complete!", state="complete", expanded=False)
 
-        m1, m2, m3, m4 = st.columns(4)
         instr_pct = round((obf_instr - orig_instr) / orig_instr * 100, 1) if orig_instr > 0 else 0
+        cc_delta = obf_cc - orig_cc
         ent_pct = round((obf_ent - orig_ent) / orig_ent * 100, 3) if orig_ent > 0 else 0
-        m1.metric("Instructions", f"{orig_instr} → {obf_instr}", f"+{instr_pct}%")
-        m2.metric("Cyclomatic CC", f"{orig_cc} → {obf_cc}", f"+{obf_cc - orig_cc}")
-        m3.metric("Entropy (bits)", f"{orig_ent} → {obf_ent}", f"+{ent_pct}%")
-        m4.metric("Obfuscation Score", f"{score}%")
+
+        mc1, mc2, mc3, mc4 = st.columns(4)
+        card_data = [
+            (mc1, "Instructions", f"{orig_instr} → {obf_instr}", f"↑ +{instr_pct}%"),
+            (mc2, "Cyclomatic CC", f"{orig_cc} → {obf_cc}", f"↑ +{cc_delta}"),
+            (mc3, "Entropy (bits)", f"{orig_ent} → {obf_ent}", f"↑ +{ent_pct}%"),
+            (mc4, "Obfuscation Score", f"{score}%", "&nbsp;"),
+        ]
+        for col, label, value, delta in card_data:
+            with col:
+                st.markdown(
+                    f"""<div class="metric-card">
+                    <div class="label">{label}</div>
+                    <div class="value">{value}</div>
+                    <div class="delta">{delta}</div>
+                    </div>""",
+                    unsafe_allow_html=True,
+                )
+
+        st.markdown("&nbsp;")
 
         fig, axes = plt.subplots(1, 3, figsize=(12, 4))
+        fig.patch.set_facecolor("#FFFFFF")
         fig.suptitle(f"Obfuscation Metrics — {strategy}", fontsize=13)
         metrics = [
             ("Instructions", orig_instr, obf_instr),
@@ -185,12 +262,12 @@ with col_right:
 
         st.write("**Obfuscated LLVM IR output**")
         st.code(obfuscated, language="llvm", line_numbers=True)
-        st.download_button("⬇ Download obfuscated .ll", obfuscated, file_name="obfuscated.ll")
+        st.download_button("Download obfuscated .ll", obfuscated, file_name="obfuscated.ll")
 
     elif run_clicked:
-        st.warning("Please provide some LLVM IR first.")
+        st.warning("Please provide some LLVM IR or C code first.")
     else:
-        st.info("Choose a sample or paste your own IR, then click **Run Obfuscator**.")
+        st.info("Choose a sample, paste IR, or paste C code, then click **Run Obfuscator**.")
 
 st.divider()
 st.caption(
