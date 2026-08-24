@@ -150,19 +150,18 @@ with col_left:
             with st.expander("View generated LLVM IR"):
                 st.code(c_ir_text, language="llvm", line_numbers=True)
 
-    st.markdown("&nbsp;")
-    source_choice = st.radio(
-        "Run obfuscator on:",
-        ["Sample program", "Pasted LLVM IR", "Compiled C code"],
-        horizontal=True,
-    )
-    if source_choice == "Sample program":
-        ir_text = sample_ir
-    elif source_choice == "Pasted LLVM IR":
-        ir_text = pasted_ir
-    else:
+      # Auto-detect which input to run: prefer compiled C, then pasted IR, then the sample.
+    if c_ir_text.strip():
         ir_text = c_ir_text
+        active_source_label = f"Compiled C code"
+    elif pasted_ir.strip():
+        ir_text = pasted_ir
+        active_source_label = "Pasted LLVM IR"
+    else:
+        ir_text = sample_ir
+        active_source_label = f"Sample program ({chosen})"
 
+    st.caption(f"Will run on: **{active_source_label}**")
     run_clicked = st.button("Run Obfuscator", type="primary", use_container_width=True)
 
 with col_right:
