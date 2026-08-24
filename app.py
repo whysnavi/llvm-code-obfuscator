@@ -243,7 +243,7 @@ with col_right:
 
         fig, axes = plt.subplots(1, 3, figsize=(12, 4))
         fig.patch.set_facecolor("#FFFFFF")
-        ffig.suptitle(f"Obfuscation Metrics: {strategy}", fontsize=13)
+        fig.suptitle(f"Obfuscation Metrics: {strategy}", fontsize=13)
         metrics = [
             ("Instructions", orig_instr, obf_instr),
             ("Cyclomatic Complexity", orig_cc, obf_cc),
