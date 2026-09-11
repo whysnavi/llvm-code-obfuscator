@@ -102,6 +102,7 @@ with col_left:
         with open(os.path.join("samples", chosen), "r", encoding="utf-8") as f:
             sample_ir = f.read()
         st.code(sample_ir, language="llvm", line_numbers=True)
+        run_sample = st.button("Run Obfuscator", key="run_sample", type="primary", use_container_width=True)
 
     with tab2:
         pasted_ir = st.text_area(
@@ -111,6 +112,7 @@ with col_left:
             key="ir_paste_area",
         )
         st.code(pasted_ir if pasted_ir else "// nothing loaded yet", language="llvm", line_numbers=True)
+        run_ir = st.button("Run Obfuscator", key="run_ir", type="primary", use_container_width=True)
 
     with tab3:
         c_code = st.text_area(
@@ -150,19 +152,31 @@ with col_left:
             with st.expander("View generated LLVM IR"):
                 st.code(c_ir_text, language="llvm", line_numbers=True)
 
-      # Auto-detect which input to run: prefer compiled C, then pasted IR, then the sample.
-    if c_ir_text.strip():
-        ir_text = c_ir_text
-        active_source_label = f"Compiled C code"
-    elif pasted_ir.strip():
-        ir_text = pasted_ir
-        active_source_label = "Pasted LLVM IR"
-    else:
+        run_c = st.button("Run Obfuscator", key="run_c", type="primary", use_container_width=True)
+
+    # Each button click carries its own source with it — no cross-tab leakage,
+    # no guessing based on "whichever field happens to be non-empty".
+    ir_text = ""
+    active_source_label = ""
+
+    if run_sample:
         ir_text = sample_ir
         active_source_label = f"Sample program ({chosen})"
+    elif run_ir:
+        ir_text = pasted_ir
+        active_source_label = "Pasted LLVM IR"
+    elif run_c:
+        if c_ir_text.strip():
+            ir_text = c_ir_text
+            active_source_label = "Compiled C code"
+        else:
+            st.warning("Compile some C code successfully first, then click Run Obfuscator again.")
 
-    st.caption(f"Will run on: **{active_source_label}**")
-    run_clicked = st.button("Run Obfuscator", type="primary", use_container_width=True)
+    if active_source_label:
+        st.caption(f"Will run on: **{active_source_label}**")
+
+    # Only treated as a "real" run once a valid source was actually resolved above.
+    run_clicked = bool(ir_text.strip())
 
 with col_right:
     st.subheader("2. Pipeline output")
